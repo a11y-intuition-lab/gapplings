@@ -65,6 +65,10 @@
     outline:.35pt dashed #bbb;
     pointer-events:none;
   }
+  /* Back pages have borderless repeating cards (no per-card cut line), so
+     the outer block outline would be the only line on the page — reads as
+     a stray frame rather than a cut guide. Suppress it there. */
+  .grid:has(.back-card)::before{ display:none; }
 
   .card{
     width:var(--card-w); height:var(--card-h);
