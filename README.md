@@ -42,10 +42,11 @@ The file also includes a fold-and-glue tuck box template sized for the
 
 ## Branding note
 
-This project was previously called "A11y Meeples." It's been renamed to
-avoid the word "Meeple," which Carcassonne's publisher holds an EU trademark
-on (word + the standardized peg-person shape). **The current icon artwork
-still depicts that classic peg-person silhouette** and has not yet been
+This project was previously known under a different name. It's been renamed
+for trademark/copyright reasons — the earlier name and its associated
+peg-person shape are protected marks held by a third party, who has
+actively enforced them. **The current icon artwork still depicts that
+classic peg-person silhouette** and has not yet been
 redrawn — this deck is fine for free, non-commercial print-and-play use, but
 is **not cleared for commercial sale** until the icon artwork (and any
 physical figure) is redesigned to a legally distinct shape, and a trademark
