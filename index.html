@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>A11y Meeples — Print Cards</title>
+<title>Gapplings — Print Cards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -175,7 +175,7 @@
 <body>
 
 <div class="toolbar">
-  <b>A11y Meeples — print</b>
+  <b>Gapplings — print</b>
   <span>Ctrl/Cmd+P → Margins: <b>None</b> → Background graphics: <b>On</b> → Paper: <b>A4</b></span>
 </div>
 
@@ -264,11 +264,11 @@ const page1 = [
     body:'Explore situations where more time is needed to perceive, understand or act.',
     question:'What does the design require people to do within a limited time?',
     note:'Think about timeouts, speed, deadlines and time pressure.' },
-  { type:'intro', title:'A11y Meeples', icon:'intro.png',
+  { type:'intro', title:'Gapplings', icon:'intro.png',
     paragraphs:[
       'Perspective tools for accessible design.',
-      'A11y Meeples help you explore how products, services and environments can create barriers for people with different functional needs.',
-      'Each Meeple offers a perspective for questioning what a design requires and finding opportunities to remove barriers.'
+      'Gapplings help you explore how products, services and environments can create barriers for people with different functional needs.',
+      'Each Gappling offers a perspective for questioning what a design requires and finding opportunities to remove barriers.'
     ],
     footer:'Functional needs may be permanent, temporary or situational.' },
 ];
@@ -276,22 +276,22 @@ const page1 = [
 const page2 = [
   { type:'principle', title:'Design for Barriers', subtitle:'A social model perspective',
     icon:'barriers.png',
-    body:'A11y Meeples use a social model perspective: barriers emerge through the interaction between people and environments, technologies, products and processes.',
+    body:'Gapplings use a social model perspective: barriers emerge through the interaction between people and environments, technologies, products and processes.',
     footer:'Functional needs may be permanent, temporary or situational.' },
   { type:'action', title:'Choose', icon:'choose.png',
-    paragraphs:['Choose a Meeple deliberately.','Use its perspective to explore a feature, task, journey or experience.'],
+    paragraphs:['Choose a Gappling deliberately.','Use its perspective to explore a feature, task, journey or experience.'],
     question:'Where are the barriers, and what could you change?' },
   { type:'action', title:'Draw', icon:'draw.png',
-    paragraphs:['Shuffle the Meeples and draw one at random.','Use the unexpected perspective to challenge assumptions and look at the design differently.'],
+    paragraphs:['Shuffle the Gapplings and draw one at random.','Use the unexpected perspective to challenge assumptions and look at the design differently.'],
     question:'What do you notice that you did not notice before?' },
   { type:'action', title:'Assign', icon:'assign.png',
-    paragraphs:['Give different Meeples to different people.','Explore the same design from several perspectives, then compare what each person noticed.'],
+    paragraphs:['Give different Gapplings to different people.','Explore the same design from several perspectives, then compare what each person noticed.'],
     question:'Where do your findings overlap or differ?' },
   { type:'action', title:'Challenge', icon:'challenge.png',
-    paragraphs:['Take a Meeple through a scenario, task or user journey.','At each step, ask what the design requires from that perspective.'],
+    paragraphs:['Take a Gappling through a scenario, task or user journey.','At each step, ask what the design requires from that perspective.'],
     question:'Where do barriers appear?' },
   { type:'action', title:'Create', icon:'create.png',
-    paragraphs:['Use A11y Meeples to create your own activity, workshop or game.','Combine them with scenarios, tasks, technologies, roles or constraints.'],
+    paragraphs:['Use Gapplings to create your own activity, workshop or game.','Combine them with scenarios, tasks, technologies, roles or constraints.'],
     question:'Choose perspectives deliberately — or introduce them at random.' },
   { type:'blank', title:'Add a Perspective', icon:'blank1.png',
     fields:[
@@ -316,7 +316,7 @@ const page2 = [
     ] },
 ];
 
-const backCard = { type:'back', title:'A11y Meeples', icon:'back.png',
+const backCard = { type:'back', title:'Gapplings', icon:'back.png',
   tagline:['Change perspective.','Find barriers.','Design better.'] };
 const page3 = Array(9).fill(backCard);
 
@@ -341,7 +341,7 @@ function boxPageHTML(){
     .map(([x1,y1,x2,y2])=>`<line class="foldline" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`)
     .join('');
   return `<div class="page box-page">
-    <div class="box-title">A11y Meeples — Eske til kortstokken</div>
+    <div class="box-title">Gapplings — Eske til kortstokken</div>
     <div class="box-subtitle">Mal · A4 · brettes og limes · tilpasset 63×88 mm kort, ca. 18 kort</div>
     <svg class="box-diagram" viewBox="0 0 210 297">
       <path class="glue-fill" d="${BOX_GLUE_FILL}"/>
@@ -349,7 +349,7 @@ function boxPageHTML(){
       ${folds}
       <path class="cutline" d="${BOX_CUT}"/>
       <g transform="translate(121,101)">
-        <text x="31.5" y="13" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="4.3" letter-spacing=".07" fill="#103c52">A11Y MEEPLES</text>
+        <text x="31.5" y="13" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="4.3" letter-spacing=".07" fill="#103c52">GAPPLINGS</text>
         <image href="icons/back.png" x="16" y="17" width="31" height="33" preserveAspectRatio="xMidYMid meet"/>
         <line x1="9.5" y1="55" x2="26" y2="55" stroke="#1c516b" stroke-width=".35" opacity=".5"/>
         <circle cx="31.5" cy="55" r=".8" fill="#1c516b"/>
@@ -382,9 +382,9 @@ function renderPage(cards, label){
 }
 
 document.getElementById('app').innerHTML =
-  renderPage(page1, 'A11y Meeples — Page 1 (front) · A4 · 9 cards · 63×88 mm') +
-  renderPage(page2, 'A11y Meeples — Page 2 (front) · A4 · 9 cards · 63×88 mm') +
-  renderPage(page3, 'A11y Meeples — Back side · A4 · 9 cards · 63×88 mm') +
+  renderPage(page1, 'Gapplings — Page 1 (front) · A4 · 9 cards · 63×88 mm') +
+  renderPage(page2, 'Gapplings — Page 2 (front) · A4 · 9 cards · 63×88 mm') +
+  renderPage(page3, 'Gapplings — Back side · A4 · 9 cards · 63×88 mm') +
   boxPageHTML();
 </script>
 </body>
