@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>A11y Meeples — Print Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#1c516b;
+    --accent-dark:#103c52;
+    --accent-fill:#557a90;
+    --cream:#ffffff;
+    --card-w:63mm;
+    --card-h:88mm;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:#e9e9e9;}
+  body{font-family:'Nunito Sans','Segoe UI',Arial,sans-serif;}
+
+  .toolbar{
+    position:sticky;top:0;z-index:10;
+    background:#222;color:#fff;padding:10px 16px;
+    font:14px/1.4 system-ui,sans-serif;
+    display:flex;gap:16px;align-items:center;flex-wrap:wrap;
+  }
+  .toolbar b{color:#77a8d9;}
+  @media print{ .toolbar{display:none !important;} }
+
+  @page{ size:A4; margin:0; }
+
+  .page{
+    position:relative;
+    width:210mm;height:297mm;
+    background:var(--cream);
+    margin:12px auto;
+    box-shadow:0 0 8px rgba(0,0,0,.25);
+    overflow:hidden;
+    page-break-after:always;
+  }
+  @media print{
+    .page{ margin:0; box-shadow:none; }
+  }
+
+  .page-label{
+    position:absolute; top:6mm; left:0; width:100%;
+    text-align:center; color:#999; font-size:8pt; letter-spacing:.5px;
+  }
+  @media print{ .page-label{ display:none; } }
+
+  .grid{
+    position:absolute;
+    top:16.5mm; left:10.5mm;
+    width:189mm; height:264mm;
+    display:grid;
+    grid-template-columns:repeat(3, 63mm);
+    grid-template-rows:repeat(3, 88mm);
+  }
+
+  /* cut guides */
+  .grid::before{
+    content:"";
+    position:absolute; inset:0;
+    outline:.35pt dashed #bbb;
+    pointer-events:none;
+  }
+
+  .card{
+    width:var(--card-w); height:var(--card-h);
+    border:1.3pt solid var(--accent);
+    border-radius:4mm;
+    padding:4mm 3.6mm 3.8mm;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+    background:var(--cream);
+    overflow:hidden;
+    position:relative;
+  }
+  .title-zone{
+    min-height:11mm;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+  }
+  .title{
+    font-family:'Poppins',sans-serif;
+    font-weight:800;
+    font-size:12.5pt;
+    letter-spacing:.2px;
+    color:var(--accent-dark);
+    text-transform:uppercase;
+    line-height:1.15;
+  }
+  .subtitle{
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:7.6pt;
+    color:var(--accent);
+    margin-top:.6mm;
+  }
+
+  .icon-zone{
+    height:24mm; width:100%;
+    display:flex; align-items:center; justify-content:center;
+    margin:1.5mm 0 1mm;
+    flex-shrink:0;
+  }
+  .icon-zone img{ max-height:100%; max-width:100%; object-fit:contain; display:block; }
+
+  .body-zone{
+    flex:1; width:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:2mm;
+  }
+  .p{ font-size:8.3pt; line-height:1.32; color:#2a2a2a; }
+  .q{ font-family:'Nunito Sans',sans-serif; font-weight:800; font-size:8.6pt; line-height:1.28; color:var(--accent-dark); }
+  .note{ font-size:7.6pt; line-height:1.3; color:#555; }
+
+  .divider{
+    display:flex; align-items:center; gap:2mm; width:70%;
+    margin:.5mm 0;
+  }
+  .divider .line{ flex:1; height:1pt; background:var(--accent); opacity:.5; }
+  .divider .dot{ width:1.6mm; height:1.6mm; border-radius:50%; background:var(--accent); }
+
+  /* blank fill-in cards */
+  .blank .body-zone{ align-items:stretch; justify-content:flex-start; gap:2.6mm; }
+  .field{ text-align:left; width:100%; }
+  .field .flabel{ font-size:7.6pt; font-weight:700; color:var(--accent-dark); }
+  .field .fline{
+    display:block; height:3.6mm; border-bottom:.6pt solid #999; margin-top:1mm;
+  }
+
+  /* back card */
+  .back-card{ border-color:transparent; }
+  .back-card .icon-zone{ height:30mm; }
+  .back-card .tagline{ color:var(--accent-dark); font-size:8.6pt; font-weight:700; line-height:1.6; margin-top:1mm; }
+
+  /* box template page */
+  .box-page{ padding-top:0; }
+  .box-title{
+    position:absolute; top:10mm; left:0; width:100%; text-align:center;
+    font-family:'Poppins',sans-serif; font-weight:800; font-size:13pt;
+    color:var(--accent-dark); text-transform:uppercase; letter-spacing:.3px;
+  }
+  .box-subtitle{
+    position:absolute; top:16.5mm; left:0; width:100%; text-align:center;
+    font-size:8.5pt; color:#555;
+  }
+  .box-diagram{ position:absolute; top:0; left:0; width:210mm; height:297mm; }
+  .cutline{ stroke:#111; stroke-width:.5pt; fill:none; stroke-linejoin:round; }
+  .foldline{ stroke:#888; stroke-width:.4pt; stroke-dasharray:2,1.6; fill:none; }
+  .glue-fill{ fill:#e2e2e2; }
+  .glue-label{
+    font-family:'Nunito Sans',sans-serif; font-weight:800; font-size:4.6px;
+    fill:#888; letter-spacing:.4px;
+  }
+  .notch-label{
+    font-family:'Nunito Sans',sans-serif; font-weight:700; font-style:italic; font-size:4.4px;
+    fill:#888;
+  }
+  .box-instructions{
+    position:absolute; top:222mm; left:25mm; width:160mm;
+    font-size:8.6pt; line-height:1.55; color:#333;
+  }
+  .box-instructions b{ color:var(--accent-dark); }
+  .box-legend{
+    position:absolute; top:222mm; right:14mm; width:52mm;
+    font-size:7.6pt; line-height:1.7; color:#555;
+  }
+  .box-legend .row{ display:flex; align-items:center; gap:2mm; margin-bottom:1mm; }
+  .box-legend svg{ width:9mm; height:3mm; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <b>A11y Meeples — print</b>
+  <span>Ctrl/Cmd+P → Margins: <b>None</b> → Background graphics: <b>On</b> → Paper: <b>A4</b></span>
+</div>
+
+<div id="app"></div>
+
+<script>
+function iconImg(name){
+  return `<img src="icons/${name}" alt="">`;
+}
+
+function cardHTML(c){
+  let inner = `<div class="title-zone">
+      <div class="title">${c.title}</div>
+      ${c.subtitle ? `<div class="subtitle">${c.subtitle}</div>` : ''}
+    </div>
+    <div class="icon-zone">${iconImg(c.icon)}</div>`;
+
+  if(c.type==='perspective'){
+    inner += `<div class="body-zone">
+      <div class="p">${c.body}</div>
+      <div class="q">${c.question}</div>
+      <div class="note">${c.note}</div>
+    </div>`;
+  } else if(c.type==='intro'){
+    inner += `<div class="body-zone">
+      ${c.paragraphs.map(p=>`<div class="p">${p}</div>`).join('')}
+      <div class="q">${c.footer}</div>
+    </div>`;
+  } else if(c.type==='principle'){
+    inner += `<div class="body-zone">
+      <div class="p">${c.body}</div>
+      <div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+      <div class="q">${c.footer}</div>
+    </div>`;
+  } else if(c.type==='action'){
+    inner += `<div class="body-zone">
+      ${c.paragraphs.map(p=>`<div class="p">${p}</div>`).join('')}
+      <div class="q">${c.question}</div>
+    </div>`;
+  } else if(c.type==='blank'){
+    inner += `<div class="body-zone">
+      ${c.fields.map(f=>`<div class="field">
+          <span class="flabel">${f.label}</span>
+          ${Array(f.lines).fill('<span class="fline"></span>').join('')}
+        </div>`).join('')}
+    </div>`;
+  } else if(c.type==='back'){
+    inner += `<div class="divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+    <div class="tagline">${c.tagline.join('<br>')}</div>`;
+  }
+  return `<div class="card ${c.type==='blank'?'blank':''} ${c.type==='back'?'back-card':''}">${inner}</div>`;
+}
+
+// ---------- Card data ----------
+
+const page1 = [
+  { type:'perspective', title:'Vision', icon:'vision.png',
+    body:'Explore situations where visual information is difficult or impossible to perceive.',
+    question:'What does the design require people to see?',
+    note:'Think about colour, contrast, size, layout and visual cues.' },
+  { type:'perspective', title:'Hearing', icon:'hearing.png',
+    body:'Explore situations where sound or speech is difficult or impossible to perceive.',
+    question:'What does the design require people to hear?',
+    note:'Think about speech, alerts, audio cues and background sound.' },
+  { type:'perspective', title:'Motor', icon:'motor.png',
+    body:'Explore situations where physical interaction, precision or movement is difficult.',
+    question:'What does the design require people to reach, hold, move or control?',
+    note:'Think about input methods, strength, precision and repeated actions.' },
+  { type:'perspective', title:'Cognitive', icon:'cognitive.png',
+    body:'Explore situations where information is difficult to understand, process or act on.',
+    question:'What does the design require people to understand, process or decide?',
+    note:'Think about complexity, choices, instructions and predictability.' },
+  { type:'perspective', title:'Memory', icon:'memory.png',
+    body:'Explore situations where remembering information, actions or previous steps is difficult.',
+    question:'What does the design require people to remember?',
+    note:'Think about instructions, passwords, previous choices and multi-step tasks.' },
+  { type:'perspective', title:'Attention', icon:'attention.png',
+    body:'Explore situations where directing, maintaining or returning attention is difficult.',
+    question:'What does the design require people to notice or stay focused on?',
+    note:'Think about distractions, interruptions, competing information and orientation.' },
+  { type:'perspective', title:'Language', icon:'language.png',
+    body:'Explore situations where written or spoken language creates a barrier.',
+    question:'What does the design require people to read, understand or express?',
+    note:'Think about vocabulary, fluency, instructions and communication.' },
+  { type:'perspective', title:'Pace', icon:'pace.png',
+    body:'Explore situations where more time is needed to perceive, understand or act.',
+    question:'What does the design require people to do within a limited time?',
+    note:'Think about timeouts, speed, deadlines and time pressure.' },
+  { type:'intro', title:'A11y Meeples', icon:'intro.png',
+    paragraphs:[
+      'Perspective tools for accessible design.',
+      'A11y Meeples help you explore how products, services and environments can create barriers for people with different functional needs.',
+      'Each Meeple offers a perspective for questioning what a design requires and finding opportunities to remove barriers.'
+    ],
+    footer:'Functional needs may be permanent, temporary or situational.' },
+];
+
+const page2 = [
+  { type:'principle', title:'Design for Barriers', subtitle:'A social model perspective',
+    icon:'barriers.png',
+    body:'A11y Meeples use a social model perspective: barriers emerge through the interaction between people and environments, technologies, products and processes.',
+    footer:'Functional needs may be permanent, temporary or situational.' },
+  { type:'action', title:'Choose', icon:'choose.png',
+    paragraphs:['Choose a Meeple deliberately.','Use its perspective to explore a feature, task, journey or experience.'],
+    question:'Where are the barriers, and what could you change?' },
+  { type:'action', title:'Draw', icon:'draw.png',
+    paragraphs:['Shuffle the Meeples and draw one at random.','Use the unexpected perspective to challenge assumptions and look at the design differently.'],
+    question:'What do you notice that you did not notice before?' },
+  { type:'action', title:'Assign', icon:'assign.png',
+    paragraphs:['Give different Meeples to different people.','Explore the same design from several perspectives, then compare what each person noticed.'],
+    question:'Where do your findings overlap or differ?' },
+  { type:'action', title:'Challenge', icon:'challenge.png',
+    paragraphs:['Take a Meeple through a scenario, task or user journey.','At each step, ask what the design requires from that perspective.'],
+    question:'Where do barriers appear?' },
+  { type:'action', title:'Create', icon:'create.png',
+    paragraphs:['Use A11y Meeples to create your own activity, workshop or game.','Combine them with scenarios, tasks, technologies, roles or constraints.'],
+    question:'Choose perspectives deliberately — or introduce them at random.' },
+  { type:'blank', title:'Add a Perspective', icon:'blank1.png',
+    fields:[
+      {label:'Name:', lines:1},
+      {label:'Explore situations where…', lines:2},
+      {label:'What does the design require people to…?', lines:2},
+      {label:'Think about…', lines:1},
+    ] },
+  { type:'blank', title:'Add a Perspective', icon:'blank2.png',
+    fields:[
+      {label:'Name:', lines:1},
+      {label:'Explore situations where…', lines:2},
+      {label:'What does the design require people to…?', lines:2},
+      {label:'Think about…', lines:1},
+    ] },
+  { type:'blank', title:'Add an Activity', icon:'activity.png',
+    fields:[
+      {label:'Name:', lines:1},
+      {label:'What is the purpose?', lines:2},
+      {label:'How does it work?', lines:2},
+      {label:'What do you notice or learn?', lines:2},
+    ] },
+];
+
+const backCard = { type:'back', title:'A11y Meeples', icon:'back.png',
+  tagline:['Change perspective.','Find barriers.','Design better.'] };
+const page3 = Array(9).fill(backCard);
+
+// ---------- Tuck box template ----------
+// Net for a standard glued tuck box, sized for 63x88mm cards, ~18 cards deep.
+// Panels left-to-right: glue flap (10mm) - side (10mm) - back (65mm) - side (10mm) - front (65mm)
+const BOX_CUT =
+  "M29,100 L35,100 L37,92 L43,92 L45,100 L47.5,100 L47.5,90 L52.5,64 L68.5,64 " +
+  "Q77.5,71 86.5,64 L102.5,64 L107.5,90 L107.5,100 L110,100 L112,92 L118,92 L120,100 " +
+  "L120,96 L185,96 L185,100 L185,190 L185,206 L120,206 L120,190 L118,202 L112,202 " +
+  "L110,190 L110,204 L45,204 L45,190 L43,202 L37,202 L35,190 L29,190 L25,186 L25,104 Z";
+const BOX_GLUE_FILL = "M29,100 L35,100 L35,190 L29,190 L25,186 L25,104 Z";
+const BOX_FOLDS_V = [[35,100,35,190],[45,100,45,190],[110,100,110,190],[120,100,120,190]];
+const BOX_FOLDS_H = [
+  [35,100,45,100],[47.5,100,107.5,100],[110,100,120,100],[120,100,185,100],
+  [47.5,90,107.5,90],
+  [35,190,45,190],[45,190,110,190],[110,190,120,190],[120,190,185,190],
+];
+
+function boxPageHTML(){
+  const folds = [...BOX_FOLDS_V, ...BOX_FOLDS_H]
+    .map(([x1,y1,x2,y2])=>`<line class="foldline" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`)
+    .join('');
+  return `<div class="page box-page">
+    <div class="box-title">A11y Meeples — Eske til kortstokken</div>
+    <div class="box-subtitle">Mal · A4 · brettes og limes · tilpasset 63×88 mm kort, ca. 18 kort</div>
+    <svg class="box-diagram" viewBox="0 0 210 297">
+      <path class="glue-fill" d="${BOX_GLUE_FILL}"/>
+      <text class="glue-label" x="32" y="146" text-anchor="middle" transform="rotate(-90 32 146)">LIM</text>
+      ${folds}
+      <path class="cutline" d="${BOX_CUT}"/>
+      <g transform="translate(121,101)">
+        <text x="31.5" y="13" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="4.3" letter-spacing=".07" fill="#103c52">A11Y MEEPLES</text>
+        <image href="icons/back.png" x="16" y="17" width="31" height="33" preserveAspectRatio="xMidYMid meet"/>
+        <line x1="9.5" y1="55" x2="26" y2="55" stroke="#1c516b" stroke-width=".35" opacity=".5"/>
+        <circle cx="31.5" cy="55" r=".8" fill="#1c516b"/>
+        <line x1="37" y1="55" x2="53.5" y2="55" stroke="#1c516b" stroke-width=".35" opacity=".5"/>
+        <text x="31.5" y="62" text-anchor="middle" font-family="'Nunito Sans',sans-serif" font-weight="700" font-size="3.05" fill="#103c52">Change perspective.</text>
+        <text x="31.5" y="67" text-anchor="middle" font-family="'Nunito Sans',sans-serif" font-weight="700" font-size="3.05" fill="#103c52">Find barriers.</text>
+        <text x="31.5" y="72" text-anchor="middle" font-family="'Nunito Sans',sans-serif" font-weight="700" font-size="3.05" fill="#103c52">Design better.</text>
+      </g>
+    </svg>
+    <div class="box-instructions">
+      <b>Slik setter du sammen esken</b><br>
+      1. Klipp langs de heltrukne linjene, brett langs de stiplede.<br>
+      2. Brett rundt til et rør og lim den grå klaffen bak innsiden av front-panelet.<br>
+      3. Brett bunnklaffene innover — først sidene, så baksiden, så fronten — og lim fronten ned til slutt.<br>
+      4. Lokket (den lange klaffen fra baksiden) brettes ned over åpningen og tres ned foran kortene. Bruk hakket til å dra det opp igjen.
+    </div>
+    <div class="box-legend">
+      <div class="row"><svg viewBox="0 0 30 10"><line x1="1" y1="5" x2="29" y2="5" class="cutline"/></svg> Klippelinje</div>
+      <div class="row"><svg viewBox="0 0 30 10"><line x1="1" y1="5" x2="29" y2="5" class="foldline"/></svg> Brettelinje</div>
+      <div class="row"><svg viewBox="0 0 30 10"><rect x="1" y="1" width="28" height="8" class="glue-fill"/></svg> Limflate</div>
+    </div>
+  </div>`;
+}
+
+function renderPage(cards, label){
+  return `<div class="page">
+    <div class="page-label">${label}</div>
+    <div class="grid">${cards.map(cardHTML).join('')}</div>
+  </div>`;
+}
+
+document.getElementById('app').innerHTML =
+  renderPage(page1, 'A11y Meeples — Page 1 (front) · A4 · 9 cards · 63×88 mm') +
+  renderPage(page2, 'A11y Meeples — Page 2 (front) · A4 · 9 cards · 63×88 mm') +
+  renderPage(page3, 'A11y Meeples — Back side · A4 · 9 cards · 63×88 mm') +
+  boxPageHTML();
+</script>
+</body>
+</html>
