@@ -381,10 +381,16 @@ function renderPage(cards, label){
   </div>`;
 }
 
+/* Front and back pages are interleaved (front, back, front, back, ...) —
+   one pair per physical sheet — so an automatic duplex print pairs them
+   correctly. Grouping both fronts before the (single, reused) back page
+   breaks double-sided printing even though the back looks identical on
+   every sheet. */
 document.getElementById('app').innerHTML =
   renderPage(page1, 'Gapplings — Page 1 (front) · A4 · 9 cards · 63×88 mm') +
+  renderPage(page3, 'Gapplings — Back (sheet 1) · A4 · 9 cards · 63×88 mm') +
   renderPage(page2, 'Gapplings — Page 2 (front) · A4 · 9 cards · 63×88 mm') +
-  renderPage(page3, 'Gapplings — Back side · A4 · 9 cards · 63×88 mm') +
+  renderPage(page3, 'Gapplings — Back (sheet 2) · A4 · 9 cards · 63×88 mm') +
   boxPageHTML();
 </script>
 </body>
