@@ -26,19 +26,17 @@ Use a Gappling to:
 
 Blank cards are included so you can add your own perspectives and activities.
 
-| | | |
-|---|---|---|
-| ![Page 1](docs/page1.png) | ![Page 2](docs/page2.png) | ![Back](docs/back.png) |
+See the deck live at [a11y-intuition-lab.github.io/gapplings](https://a11y-intuition-lab.github.io/gapplings/).
 
 ## Print & play
 
-Open [`index.html`](index.html) in a browser and print:
+Open the [live page](https://a11y-intuition-lab.github.io/gapplings/) (or
+[`index.html`](index.html) locally) in a browser and print:
 
 > Ctrl/Cmd+P → Margins: **None** → Background graphics: **On** → Paper: **A4**
 
 The file also includes a fold-and-glue tuck box template sized for the
-63×88 mm cards. A pre-rendered PDF is available at
-[`print/gapplings-cards.pdf`](print/gapplings-cards.pdf).
+63×88 mm cards.
 
 ## Branding note
 
